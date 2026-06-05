@@ -62,7 +62,9 @@ import {
 	setScrollPosition,
 } from "cm/editorUtils";
 import indentGuides from "cm/indentGuides";
+import { lineBreakMarker } from "cm/lineBreakMarker";
 import rainbowBrackets, { getRainbowBracketColors } from "cm/rainbowBrackets";
+import tagAutoRename from "cm/tagAutoRename";
 import { getThemeConfig, getThemeExtensions } from "cm/themes";
 import list from "components/collapsableList";
 import quickTools from "components/quickTools";
@@ -256,6 +258,10 @@ async function EditorManager($header, $body) {
 	const rainbowCompartment = new Compartment();
 	// Compartment for indent guides
 	const indentGuidesCompartment = new Compartment();
+	// Compartment for line break marker
+	const lineBreakMarkerCompartment = new Compartment();
+	// Compartment for HTML-like tag auto rename
+	const tagAutoRenameCompartment = new Compartment();
 	// Compartment for read-only toggling
 	const readOnlyCompartment = new Compartment();
 	// Compartment for language mode (allows async loading/reconfigure)
@@ -451,6 +457,14 @@ async function EditorManager($header, $body) {
 			},
 		},
 		{
+			keys: ["showSpaces"],
+			compartments: [lineBreakMarkerCompartment],
+			build() {
+				const showSpaces = !!appSettings?.value?.showSpaces;
+				return showSpaces ? lineBreakMarker : [];
+			},
+		},
+		{
 			keys: ["fadeFoldWidgets"],
 			compartments: [foldThemeCompartment],
 			build() {
@@ -487,6 +501,15 @@ async function EditorManager($header, $body) {
 			build() {
 				const enabled = !!appSettings?.value?.localWordCompletion;
 				return enabled ? localWordCompletions() : [];
+			},
+		},
+		{
+			keys: ["autoRenameTags"],
+			compartments: [tagAutoRenameCompartment],
+			build() {
+				// Default-on for older settings files that do not have this key yet.
+				const enabled = appSettings?.value?.autoRenameTags !== false;
+				return enabled ? tagAutoRename() : [];
 			},
 		},
 	];
@@ -1602,6 +1625,10 @@ async function EditorManager($header, $body) {
 		applyOptions(["localWordCompletion"]);
 	});
 
+	appSettings.on("update:autoRenameTags", function () {
+		applyOptions(["autoRenameTags"]);
+	});
+
 	appSettings.on("update:autoCloseTags", function () {
 		const file = manager.activeFile;
 		if (file?.type === "editor") applyFileToEditor(file);
@@ -1796,7 +1823,9 @@ async function EditorManager($header, $body) {
 			: manager.files.length;
 		manager.files.splice(insertAt, 0, file);
 		syncOpenFileList();
-		$header.text = file.name;
+		if (!manager.activeFile) {
+			$header.text = file.name;
+		}
 		toggleProblemButton();
 	}
 

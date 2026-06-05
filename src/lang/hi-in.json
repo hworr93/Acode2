@@ -660,7 +660,7 @@
 	"settings-info-editor-rtl-text": "Switch right-to-left behavior per line.",
 	"settings-info-editor-scroll-settings": "Adjust scrollbar size, speed, and gesture behavior.",
 	"settings-info-editor-shift-click-selection": "Extend selection with Shift + tap or click.",
-	"settings-info-editor-show-spaces": "Display visible whitespace markers.",
+	"settings-info-editor-show-spaces": "दृश्यमान रिक्त स्थान और पंक्ति विराम चिह्न दिखाएँ।",
 	"settings-info-editor-soft-tab": "Insert spaces instead of tab characters.",
 	"settings-info-editor-tab-size": "Set how many spaces each tab step uses.",
 	"settings-info-editor-teardrop-size": "Set the cursor handle size for touch editing.",
@@ -738,5 +738,9 @@
 	"iap-pro-purchase-warning": "यह खरीदारी आपके Acode खाते से सिंक नहीं होगी। अपनी खरीदारी पुनर्स्थापित करने के लिए Play Store में उसी Google खाते का उपयोग करें।",
 	"confirm-login": "आप Acode में साइन इन नहीं हैं, अभी साइन इन करें?",
 	"local word completion": "Local word completion",
-	"settings-info-editor-local-word-completion": "Suggest words from the current file."
+	"settings-info-editor-local-word-completion": "Suggest words from the current file.",
+	"terminal:failsafe": "FailSafe mode",
+	"terminal:failsafe-info": "Start terminal with system shell",
+	"auto rename tags": "Auto rename tags",
+	"settings-info-editor-auto-rename-tags": "Rename the matching opening or closing tag while editing HTML-like tags."
 }
